@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d3f52">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ГОРТИГ">
+<title>ГОРТИГ — геометр байгуулалт</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <circle cx="12" cy="12" r="8" fill="none" stroke="#ffd9a0" stroke-width="1.6"/>
+      <path d="M12 4 L7 19 M12 4 L17 19" fill="none" stroke="#ffd9a0" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="12" cy="4" r="1.6" fill="#ffd9a0"/>
+    </svg>
+    <span>ГОРТИГ</span>
+  </div>
+  <div class="sub6">6-р анги · Геометр байгуулалт</div>
+</header>
+
+<main id="view"></main>
+
+<nav class="bot">
+  <button data-go="learn" class="on"><span>📐</span>Сурах</button>
+  <button data-go="play"><span>🎮</span>Тоглоом</button>
+  <button data-go="test"><span>✍</span>Тест</button>
+  <button data-go="stat"><span>⭐</span>Ахиц</button>
+</nav>
+
+<script src="data.js"></script>
+<script src="draw.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -299,6 +299,80 @@ const GEO = {
   ];
  },
 
+ /* Призмийн дэлгээс (сурах бичиг х.25, 1.32–1.33 зураг): зөв гурвалжин суурь 40 мм, өндөр 80 мм */
+ prism() {
+  const a = 62, hg = 2 * a, th = a * Math.sqrt(3) / 2;   /* 40 мм → a, 80 мм → 2a */
+  const x0 = CX - 1.5 * a, yt = (VB - (hg + 2 * th)) / 2 + th, yb = yt + hg;
+  const cx1 = x0 + a, cx2 = x0 + 2 * a;
+  const tabs = [[x0 + 3 * a, yt, x0 + 3 * a + 16, yt + 12, x0 + 3 * a + 16, yb - 12, x0 + 3 * a, yb]];
+  return [
+   [{ poly: [[x0, yt], [x0 + 3 * a, yt], [x0 + 3 * a, yb], [x0, yb]], k: 1 },
+    { t: [16, 26, '3 × (40 × 80 мм)', 13] }],
+   [{ l: [cx1, yt, cx1, yb], dash: 1 }, { l: [cx2, yt, cx2, yb], dash: 1 }],
+   [{ poly: [[cx1, yt], [cx2, yt], [CX, yt - th]], k: 1 }, { l: [cx1, yt, cx2, yt], dash: 1 }],
+   [{ poly: [[cx1, yb], [cx2, yb], [CX, yb + th]], k: 1 }, { l: [cx1, yb, cx2, yb], dash: 1 }],
+   [{ poly: [[tabs[0][0], tabs[0][1]], [tabs[0][2], tabs[0][3]], [tabs[0][4], tabs[0][5]], [tabs[0][6], tabs[0][7]]] },
+    { l: [x0 + 3 * a, yt, x0 + 3 * a, yb], dash: 1 },
+    { t: [x0 - 10, yb + th + 24, 'суурь — ижил хоёр зөв гурвалжин', 12] }]
+  ];
+ },
+ /* Пирамидын дэлгээс (сурах бичиг х.26, 1.34–1.35): суурь 40 мм, ирмэг 60 мм */
+ pyr() {
+  const a = 62, sl = 93, Oc = [CX, 154];                 /* 40 мм → a, 60 мм → sl */
+  const Rc = a / Math.sqrt(3);
+  const V = [P(Oc[0], Oc[1], Rc, -90), P(Oc[0], Oc[1], Rc, 30), P(Oc[0], Oc[1], Rc, 150)];
+  const hh = Math.sqrt(sl * sl - (a / 2) * (a / 2));
+  const apex = (p, q) => {
+    const m = MID(p, q), u = UNIT(p, q), n = [-u[1], u[0]];
+    const out = (DIST(ADD(m, MUL(n, 10)), Oc) > DIST(m, Oc)) ? n : MUL(n, -1);
+    return ADD(m, MUL(out, hh));
+  };
+  const A1 = apex(V[1], V[2]), A2 = apex(V[0], V[1]), A3 = apex(V[2], V[0]);
+  return [
+   [{ poly: V, k: 1 }, { t: [Oc[0] - 22, Oc[1] + 26, '40', 12] }],
+   [{ poly: [V[1], V[2], A1], k: 1 }, { l: [...V[1], ...V[2]], dash: 1 }],
+   [{ poly: [V[0], V[1], A2], k: 1 }, { l: [...V[0], ...V[1]], dash: 1 }],
+   [{ poly: [V[2], V[0], A3], k: 1 }, { l: [...V[2], ...V[0]], dash: 1 }],
+   [{ t: [CX - 88, 330, 'хажуу тал — ижил 3 гурвалжин (40×60)', 12] },
+    { p: [...A1, ''] }, { p: [...A2, ''] }, { p: [...A3, ''] }]
+  ];
+ },
+ /* Конусын дэлгээс (сурах бичиг х.26, 1.36 зураг): d = 50 мм, l = 60 мм → φ = 150° */
+ cone() {
+  const k = 2.167, l = 60 * k, R = 25 * k, phi = 360 * 25 / 60;   /* 150° */
+  const O = [CX, 78], a1 = 90 - phi / 2, a2 = 90 + phi / 2;
+  const E1 = P(O[0], O[1], l, a1), E2 = P(O[0], O[1], l, a2);
+  const Bc = [CX, 292];
+  return [
+   [{ p: [...O, 'O'] }, { t: [O[0] - 88, O[1] - 34, 'φ = 360°·R/l = 150°', 13] }],
+   [{ arc: [...O, l, a1, a2] }],
+   [{ sec: [...O, l, a1, a2] }, { t: [O[0] - 22, O[1] + 46, 'l = 60', 12] }],
+   [{ c: [...Bc, R], k: 1 }, { t: [Bc[0] - 30, Bc[1] + 4, 'd = 50', 12] }],
+   [{ sec: [...O, l, a1, a2] }, { c: [...Bc, R], k: 1 },
+    { l: [...E1, ...ADD(E1, MUL(UNIT(O, E1), 15))], dash: 1 },
+    { l: [...E2, ...ADD(E2, MUL(UNIT(O, E2), 15))], dash: 1 },
+    { poly: [[Bc[0] - 16, Bc[1] - R], [Bc[0] - 12, Bc[1] - R - 13],
+             [Bc[0] + 12, Bc[1] - R - 13], [Bc[0] + 16, Bc[1] - R]] },
+    { t: [CX - 66, 350, 'нугалах шугам ба хавтас', 12] }]
+  ];
+ },
+ /* Цилиндрийн дэлгээс (сурах бичиг х.27, 1.38 зураг): өргөн = l = πD */
+ cyl() {
+  const D = 40, h = 60, k = 2.2, r = D * k / 2, w = Math.PI * D * k, hh = h * k;
+  const x0 = CX - w / 2, yt = 110, yb = yt + hh;
+  return [
+   [{ t: [x0, yt - 44, 'l = πD = 3,14 × 40 = 125,6 мм', 13] },
+    { l: [x0, yt - 26, x0 + w, yt - 26], dash: 1 },
+    { ar: [x0 + 22, yt - 26, x0, yt - 26] }, { ar: [x0 + w - 22, yt - 26, x0 + w, yt - 26] }],
+   [{ poly: [[x0, yt], [x0 + w, yt], [x0 + w, yb], [x0, yb]], k: 1 },
+    { t: [x0 + w + 4, (yt + yb) / 2, 'h', 13] }],
+   [{ c: [CX, yt - r, r], k: 1 }, { l: [x0, yt, x0 + w, yt], dash: 1 }],
+   [{ c: [CX, yb + r, r], k: 1 }, { l: [x0, yb, x0 + w, yb], dash: 1 }],
+   [{ poly: [[x0 + w, yt], [x0 + w + 15, yt + 10], [x0 + w + 15, yb - 10], [x0 + w, yb]] },
+    { t: [x0, yb + 2 * r + 22, 'наах хавтас', 12] }]
+  ];
+ },
+
 /* ═══════════ 8-р АНГИ ═══════════ */
  /* Нэгдсэн ортогональ проекц (сурах бичиг х.10–11) */
  ort() {
@@ -476,6 +550,12 @@ function svgPart(d, hot) {
           p2 = [x2 - s * Math.cos(an + 0.4), y2 - s * Math.sin(an + 0.4)];
     return `<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${col}" stroke-width="2"/>` +
       `<polygon points="${f(x2)},${f(y2)} ${f(p1[0])},${f(p1[1])} ${f(p2[0])},${f(p2[1])}" fill="${col}"/>`;
+  }
+  if (d.sec) { /* тойргийн хэсэг (сектор) — конусын дэлгээст */
+    const [cx, cy, r, a1, a2] = d.sec, s = P(cx, cy, r, a1), e = P(cx, cy, r, a2);
+    const big = ((a2 - a1 + 360) % 360) > 180 ? 1 : 0;
+    return `<path d="M ${f(cx)} ${f(cy)} L ${f(s[0])} ${f(s[1])} A ${f(r)} ${f(r)} 0 ${big} 1 ${f(e[0])} ${f(e[1])} Z" ` +
+      `fill="${hot ? 'rgba(224,90,58,.10)' : 'rgba(47,111,143,.07)'}" stroke="${col}" stroke-width="${w}"/>`;
   }
   if (d.arc) {
     const [cx, cy, r, a1, a2] = d.arc, s = P(cx, cy, r, a1), e = P(cx, cy, r, a2);

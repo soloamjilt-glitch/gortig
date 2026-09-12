@@ -141,3 +141,10 @@ nav.bot button span{font-size:1.28rem;line-height:1}
 nav.bot button.on{color:var(--sea);font-weight:700}
 
 @media (min-width:520px){ .opts{grid-template-columns:repeat(4,1fr)} .opts.col{grid-template-columns:1fr} }
+
+/* ── зохиогчийн тэмдэг («Ахиц» дэлгэцийн хөлд) ── */
+.credit{display:flex;align-items:center;gap:10px;margin:20px 2px 6px;padding-top:14px;
+  border-top:1px solid var(--line)}
+.credit svg{flex:0 0 auto}
+.credit span{font-size:.74rem;line-height:1.35;color:var(--mute)}
+.credit b{display:block;font-size:.86rem;color:#14563F;font-weight:700}

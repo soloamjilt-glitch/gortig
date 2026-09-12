@@ -1,7 +1,9 @@
 /* ГОРТИГ — офлайн кэш */
 const V = 'gortig-v1';
-const FILES = ['./','./index.html','./styles.css','./data.js','./draw.js','./app.js',
-               './manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
+/* './index.html' ОРУУЛАХГҮЙ: Vercel-ийн cleanUrls нь түүнийг '/' руу чиглүүлдэг тул
+   чиглүүлсэн хариуг кэшлэхэд addAll унаж, SW суулгагдахгүй. './' нь хуудсыг аль хэдийн хамарна. */
+const FILES = ['./','./styles.css','./data.js','./draw.js','./app.js',
+               './manifest.webmanifest','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

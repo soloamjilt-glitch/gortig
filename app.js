@@ -289,4 +289,35 @@ const SCREENS = { learn: scrLearn, play: scrPlay, test: scrTest, stat: scrStat }
 document.querySelectorAll('nav.bot button').forEach(b => { b.onclick = () => go(b.dataset.go); });
 go('learn');
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+/* ── Офлайн бэлэн эсэхийг утсан дээр нүдэн харуулна ── */
+const NEED = 9;                    /* sw.js-ийн FILES-ийн тоо */
+const offl = document.getElementById('offl');
+function offlShow(cls, txt) {
+  offl.hidden = false;
+  offl.className = 'offl ' + cls;
+  offl.textContent = txt;
+}
+async function offlCheck() {
+  try {
+    if (!('caches' in window)) { offlShow('no', 'Офлайн: хөтөч дэмжихгүй'); return true; }
+    const ks = await caches.keys();
+    const k = ks.filter(x => x.indexOf('gortig-') === 0).sort().pop();
+    const n = k ? (await (await caches.open(k)).keys()).length : 0;
+    if (n >= NEED) { offlShow('ok', '✓ Офлайн бэлэн — интернэтгүй ажиллана'); return true; }
+    if (navigator.onLine) offlShow('wait', 'Офлайн бэлтгэж байна… ' + n + '/' + NEED);
+    else offlShow('no', 'Офлайн бэлэн БИШ — интернэттэй нэг удаа нээ');
+  } catch (e) {
+    offlShow('no', 'Офлайн кэш ажиллахгүй');
+    return true;
+  }
+  return false;
+}
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+  let t = 0;
+  const tick = async () => { if (!(await offlCheck()) && ++t < 24) setTimeout(tick, 1500); };
+  tick();
+  offl.onclick = () => { t = 0; tick(); };
+} else {
+  offlShow('no', 'Офлайн: хөтөч дэмжихгүй');
+}

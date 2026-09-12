@@ -1,5 +1,5 @@
 /* ГОРТИГ — офлайн кэш */
-const V = 'gortig-v2';
+const V = 'gortig-v3';
 /* './index.html' ОРУУЛАХГҮЙ: Vercel-ийн cleanUrls нь түүнийг '/' руу чиглүүлдэг тул
    чиглүүлсэн хариуг кэшлэхэд addAll унаж, SW суулгагдахгүй. './' нь хуудсыг аль хэдийн хамарна. */
 const FILES = ['./','./styles.css','./data.js','./draw.js','./app.js',

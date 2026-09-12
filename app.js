@@ -1,16 +1,18 @@
-/* ГОРТИГ — бие даан сурах апп (6–9-р анги) */
+/* ГОРТИГ — бие даан сурах апп (6–12-р анги) */
 'use strict';
 
 /* ── хадгалалт: анги тус бүрд тусдаа ахиц ── */
 const KEY = 'gortig_v2', OLDKEY = 'gortig_v1';
 const blank = () => ({ seen: {}, ang: 0, order: 0, spot: 0, name: 0, next: 0, test: 0, tries: 0 });
-let ST = { g: 6, p: { 6: blank(), 7: blank(), 8: blank(), 9: blank() } };
+const ALLG = [6, 7, 8, 9, 10, 11, 12];
+let ST = { g: 6, p: {} };
+ALLG.forEach(k => ST.p[k] = blank());
 try {
   const r = localStorage.getItem(KEY);
   if (r) {
     const o = JSON.parse(r);
     ST.g = o.g || 6;
-    for (const k of [6, 7, 8, 9]) ST.p[k] = Object.assign(blank(), (o.p && o.p[k]) || {});
+    for (const k of ALLG) ST.p[k] = Object.assign(blank(), (o.p && o.p[k]) || {});
   } else {
     /* хуучин 6-р ангийн ахицыг нүүлгэнэ */
     const old = localStorage.getItem(OLDKEY);
@@ -343,7 +345,7 @@ function scrStat() {
 
   /* бүх ангийн тойм */
   const all = el('div', 'list');
-  [6, 7, 8, 9].forEach(n => {
+  ALLG.forEach(n => {
     const s = GRADES[n].cons.filter(c => ST.p[n].seen[c.id]).length;
     const b = el('button', 'row' + (n === ST.g ? ' done' : ''));
     b.innerHTML = `<span class="rowicon">${n}</span>

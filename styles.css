@@ -20,6 +20,11 @@ body{
 }
 .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.16rem;letter-spacing:.06em}
 .sub6{font-size:.76rem;opacity:.85;margin-top:2px}
+.gpick{display:flex;gap:6px;margin-top:9px}
+.gpick button{flex:1;min-height:34px;border:1.4px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);color:#fff;font:inherit;font-weight:800;font-size:.94rem;
+  border-radius:9px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.gpick button.on{background:#fff;color:var(--deep);border-color:#fff}
 .offl{margin-top:7px;display:inline-block;font-size:.72rem;font-weight:700;line-height:1.3;
   padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;
   border:0;font-family:inherit;cursor:pointer}
@@ -61,6 +66,7 @@ h2{font-size:1.1rem;margin:8px 0 2px;color:var(--navy);line-height:1.35}
 .draw{background:#fff;border:1px solid var(--line);border-radius:16px;
   padding:8px;margin:10px 0;cursor:pointer}
 .draw svg{display:block;width:100%;height:auto}
+.draw.sm{max-width:260px;margin:0 auto 10px;padding:6px}
 .cap{background:#fff8f3;border-left:4px solid var(--hot);border-radius:0 12px 12px 0;
   padding:11px 13px;font-size:.95rem;min-height:62px}
 .cap .num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--hot);
